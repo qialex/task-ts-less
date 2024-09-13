@@ -1,0 +1,26 @@
+{
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "src/ts/**/*"
+  ],
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "outDir": "./src/js",
+    "target": "esnext",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": [
+      "dom",
+      "es2019",
+      "esnext.asynciterable"
+    ]
+  }
+}
