@@ -9,7 +9,7 @@
   "compilerOptions": {
     "strict": true,
     "module": "commonjs",
-    "outDir": "./src/js",
+    "outDir": "./dist/",
     "target": "esnext",
     "sourceMap": true,
     "moduleResolution": "node",
