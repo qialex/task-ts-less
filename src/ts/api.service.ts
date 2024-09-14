@@ -1,9 +1,9 @@
-import { ApiResponse, ApiStatus, BeerDTO } from "./types"
+import { ApiResult, ApiStatus, BeerDTO } from "./types"
 
 export class ApiService {
   url: string = process.env.API_URL || ''
 
-  async getAll(): Promise<ApiResponse<BeerDTO[]>> {
+  async getAll(): Promise<ApiResult<BeerDTO[]>> {
     return fetch(this.url)
       .then((response: Response) => {
         if (!response.ok) {

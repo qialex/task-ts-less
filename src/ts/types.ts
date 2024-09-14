@@ -14,7 +14,7 @@ export type Beer = {
 
 export type BeerDTO = Omit<Beer, 'imageUrl'> & { image_url: string }
 
-export type ApiResponse<T> = { 
+export type ApiResult<T> = { 
   data: T, 
   status: ApiStatus
 }
@@ -25,9 +25,30 @@ export enum ApiStatus {
   ok = 'ok',
 }
 
-export enum ActionType {
-  initApp = 'initApp',  
+export enum EventType {
+  initApp = 'initApp',
+  repeatDataLoading = 'repeatDataLoading',
   selectItem = 'selectItem',
+}
+
+type EventBase = {
+  type: EventType;
+};
+
+interface EventWithPayload<T> extends EventBase {
+  payload: T;
+}
+
+export type Event<T = void> = T extends void
+  ? EventBase
+  : EventWithPayload<T>;
+
+
+
+export enum ActionType {
+  setApiStatus = 'setApiStatus',  
+  // setApiResult = 'setApiResult',
+  getAllBeers = 'getAllBeers',
 }
 
 type ActionBase = {
@@ -41,3 +62,4 @@ interface ActionWithPayload<T> extends ActionBase {
 export type Action<T = void> = T extends void
   ? ActionBase
   : ActionWithPayload<T>;
+
