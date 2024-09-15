@@ -28,11 +28,19 @@ export enum ApiStatus {
   ok = 'ok',
 }
 
+export type ClickListener = {
+  target: string,
+  ignore: string,
+  callback: () => void,
+}
+
 export enum EventType {
   initApp = 'initApp',
   repeatDataLoading = 'repeatDataLoading',
   selectItem = 'selectItem',
   deselectItem = 'deselectItem',
+  setDropDown = 'setDropDown',
+  selectDropDownChild = 'selectDropDownChild',
 }
 
 type EventBase = {
@@ -50,10 +58,12 @@ export type Event<T = void> = T extends void
 
 
 export enum ActionType {
-  setApiStatus    = 'setApiStatus',  
-  getAllBeers     = 'getAllBeers',
-  selectBeer      = 'selectBeer',
-  deselectBeer    = 'deselectBeer',
+  setApiStatus = 'setApiStatus',  
+  getAllBeers = 'getAllBeers',
+  selectBeer = 'selectBeer',
+  deselectBeer = 'deselectBeer',
+  setDropDown = 'setDropDown',
+  selectDropDownChild = 'selectDropDownChild',
 }
 
 type ActionBase = {

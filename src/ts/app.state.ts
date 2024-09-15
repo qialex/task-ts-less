@@ -28,6 +28,16 @@ export class AppState {
         {type: ActionType.deselectBeer} as Action,
       ]
     }
+    if (event.type === EventType.setDropDown) {
+      return [
+        {type: ActionType.setDropDown, payload: (event as Event<boolean>).payload} as Action<boolean>,
+      ]
+    }
+    if (event.type === EventType.selectDropDownChild) {
+      return [
+        {type: ActionType.selectDropDownChild, payload: (event as Event<number>).payload} as Action<number>,
+      ]
+    }
     return []
   }
 
@@ -47,5 +57,14 @@ export class AppState {
     if (action.type === ActionType.deselectBeer) {
       this.props.selectedBeer = undefined
     }    
+    if (action.type === ActionType.setDropDown) {
+      this.props.isDropDownOpen = (action as Action<boolean>).payload
+      if (!this.props.isDropDownOpen) {
+        this.props.dropDownItemSelected = undefined
+      }
+    }
+    if (action.type === ActionType.selectDropDownChild) {
+      this.props.dropDownItemSelected = (action as Action<number>).payload
+    }
   }
 }

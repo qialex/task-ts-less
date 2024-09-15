@@ -5,7 +5,7 @@ import { Action, Event, EventType } from "./types";
 
 export class App {
   state: AppState = new AppState()
-  renderer: Renderer = new Renderer(this.eventHandler.bind(this))
+  renderer: Renderer = new Renderer(this.state.props, this.eventHandler.bind(this))
 
   constructor() {
     this.eventHandler({type: EventType.initApp})
