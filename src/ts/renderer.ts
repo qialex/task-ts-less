@@ -41,10 +41,13 @@ export class Renderer {
  
       // api loading
       if (props.apiStatus === ApiStatus.loading) {
+        const elApiLoadingBG = document.createElement('div')
+        elApiLoadingBG.classList.add('loader-bg')
+        elContainer.appendChild(elApiLoadingBG)
+
         const elApiLoading = document.createElement('div')
-        // TODO: style loading 
-        elApiLoading.textContent = 'loading ... ' 
-        elContainer.appendChild(elApiLoading)
+        elApiLoading.classList.add('loader')
+        elApiLoadingBG.appendChild(elApiLoading)
       }
 
       // error api
@@ -63,6 +66,10 @@ export class Renderer {
   
       // no items or error show repeat button
       if (props.apiStatus === ApiStatus.error || (props.apiStatus === ApiStatus.ok && !props.beers.length)) {
+        const elRepeatButtonWrapper = document.createElement('div')
+        elRepeatButtonWrapper.classList.add('repeat-button-wrapper')
+        elContainer.appendChild(elRepeatButtonWrapper)
+
         const elRepeatButton = document.createElement('button')
         elRepeatButton.classList.add('repeat-button')
         elRepeatButton.textContent = this.localisation.get('repeat')
@@ -71,12 +78,13 @@ export class Renderer {
           ignore: '',
           callback: () => this.eventHandler({type: EventType.repeatDataLoading}),
         })
-        elContainer.appendChild(elRepeatButton)
+        elRepeatButtonWrapper.appendChild(elRepeatButton)
       }
 
       // render grid of items
       if ((props.apiStatus === ApiStatus.ok) && props.beers.length) {
         const elBeerGrid = document.createElement('div')
+        elBeerGrid.classList.add('beers-grid')
         elContainer.appendChild(elBeerGrid)
         props.beers.forEach((beer: Beer) => elBeerGrid.appendChild(this.renderBeer(beer)))
 
@@ -99,28 +107,49 @@ export class Renderer {
     const elBeerItem = document.createElement('div')
     const key = `beer-item-${beer.id.toString()}`
     elBeerItem.classList.add(key)
+    elBeerItem.classList.add('beer-item')
+
+    const elBeerItemContent = document.createElement('div')
+    elBeerItemContent.classList.add('beer-item-content')
+    elBeerItem.append(elBeerItemContent)
+    
     this.clickListeners.push({
       target: key,
       ignore: '',
       callback: () => this.eventHandler({type: EventType.selectItem, payload: beer} as Event<Beer>),
     })
 
-    
-    const elBeerTitle = document.createElement('div')
-    elBeerTitle.textContent = beer.name
-    elBeerItem.appendChild(elBeerTitle)
-
-    const elBeerIbu = document.createElement('div')
-    elBeerIbu.textContent = `${this.localisation.get('abbrIBU')}: ${beer.ibu}`
-    elBeerItem.appendChild(elBeerIbu)
-
-    const elBeerAbv = document.createElement('div')
-    elBeerAbv.textContent = `${beer.abv}%`
-    elBeerItem.appendChild(elBeerAbv)
+    // img bg
+    const elBeerImageBG = document.createElement('div')
+    elBeerImageBG.classList.add('beer-item-img-bg')
+    elBeerItemContent.appendChild(elBeerImageBG)
 
     const elBeerImage = document.createElement('img')
+    elBeerImage.classList.add('beer-item-img')
     elBeerImage.src = beer.imageUrl
-    elBeerItem.appendChild(elBeerImage)
+    elBeerImageBG.appendChild(elBeerImage)
+
+    // title
+    const elBeerTitle = document.createElement('div')
+    elBeerTitle.classList.add('beer-item-title')
+    elBeerTitle.textContent = beer.name
+    elBeerItemContent.appendChild(elBeerTitle)
+
+    // ibu
+    const elBeerIbu = document.createElement('div')
+    elBeerIbu.classList.add('beer-item-ibu')
+    elBeerIbu.textContent = `${this.localisation.get('abbrIBU')}: ${beer.ibu}`
+    elBeerItemContent.appendChild(elBeerIbu)
+
+    // abv
+    const elBeerAbvBg = document.createElement('div')
+    elBeerAbvBg.classList.add('beer-item-abv-bg')
+    elBeerItemContent.appendChild(elBeerAbvBg)
+
+    const elBeerAbv = document.createElement('div')
+    elBeerAbv.classList.add('beer-item-abv')
+    elBeerAbv.textContent = `${beer.abv}%`
+    elBeerAbvBg.appendChild(elBeerAbv)
 
     return elBeerItem
   }

@@ -1,51 +1,8 @@
-/* place less here */
-body {
-  margin: 0;
-  background: orange;
-}
-
-.popup-wrapper {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.popup-close-icon {
-  width:40px;
-  height:40px;
-  background-color: white;
-  position:relative;
-  border-radius:100%;
-  cursor: pointer;
-}
-
-.popup-close-icon:before,.popup-close-icon:after{
-  content:'';
-  position:absolute;
-  width:28px;
-  height:4px;
-  background-color:black;
-  border-radius:2px;
-  top:18px;
-}
-
-.popup-close-icon:before{
-  transform:rotate(45deg);
-  left:6px;
-}
-.popup-close-icon:after{
-  transform:rotate(-45deg);
-  right:6px;
-}
-
-.popup-content {
-  background: white;
-  width: 60vw;
-  height: 60vh;
-}
+/* less */
+@import "./mixin.less";
+@import "./grid.less";
+@import "./global.less";
+@import "./loader.less";
+@import "./popup.less";
+@import "./other.less";
+@import "./theme.less";
