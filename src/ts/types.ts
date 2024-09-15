@@ -1,6 +1,9 @@
 export type AppStateProps = {
   apiStatus: ApiStatus,
   beers: Beer[],
+  selectedBeer: Beer | undefined,
+  isDropDownOpen: boolean,
+  dropDownItemSelected: number | undefined
 }
 
 export type Beer = {
@@ -29,6 +32,7 @@ export enum EventType {
   initApp = 'initApp',
   repeatDataLoading = 'repeatDataLoading',
   selectItem = 'selectItem',
+  deselectItem = 'deselectItem',
 }
 
 type EventBase = {
@@ -46,9 +50,10 @@ export type Event<T = void> = T extends void
 
 
 export enum ActionType {
-  setApiStatus = 'setApiStatus',  
-  // setApiResult = 'setApiResult',
-  getAllBeers = 'getAllBeers',
+  setApiStatus    = 'setApiStatus',  
+  getAllBeers     = 'getAllBeers',
+  selectBeer      = 'selectBeer',
+  deselectBeer    = 'deselectBeer',
 }
 
 type ActionBase = {

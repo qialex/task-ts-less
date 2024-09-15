@@ -6,6 +6,11 @@ export const dictionaryDefault = {
   apiError: 'Some error while fetching the data',
   notFound: 'Not Found',
   repeat: 'Repeat',
+  abbrIBU: 'IBU',
+  order: 'Order',
+  glass: 'Glass',
+  can: 'Can',
+  box: 'Box',
 }
 
 export type LocaleLangType = typeof localeLangs;
@@ -28,7 +33,7 @@ export class Dictionary {
   }
 }
 
-export class LocalisationService {
+export class LocaleService {
 
   defaultLang: LocaleLang = localeLangs.en
 

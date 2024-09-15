@@ -1,11 +1,14 @@
 import { ApiService } from "./api.service";
 import { transformBeer } from "./helpers";
-import { Action, ApiStatus, AppStateProps, ActionType, Event, EventType } from "./types";
+import { Action, ApiStatus, AppStateProps, ActionType, Event, EventType, Beer } from "./types";
 
 export class AppState {
   props: AppStateProps = {
     apiStatus: ApiStatus.ok,
     beers: [],
+    selectedBeer: undefined,
+    isDropDownOpen: false,
+    dropDownItemSelected: undefined,
   }
   
   eventsToActions(event: Event): Action[] {
@@ -13,6 +16,16 @@ export class AppState {
       return [
         {type: ActionType.setApiStatus, payload: ApiStatus.loading} as Action<ApiStatus>,
         {type: ActionType.getAllBeers} as Action,
+      ]
+    }
+    if (event.type === EventType.selectItem) {
+      return [
+        {type: ActionType.selectBeer, payload: (event as Event<Beer>).payload} as Action<Beer>,
+      ]
+    }
+    if (event.type === EventType.deselectItem) {
+      return [
+        {type: ActionType.deselectBeer} as Action,
       ]
     }
     return []
@@ -28,5 +41,11 @@ export class AppState {
       this.props.apiStatus = status
       this.props.beers = transformBeer(data)
     }
+    if (action.type === ActionType.selectBeer) {
+      this.props.selectedBeer = (action as Action<Beer>).payload
+    }
+    if (action.type === ActionType.deselectBeer) {
+      this.props.selectedBeer = undefined
+    }    
   }
 }
