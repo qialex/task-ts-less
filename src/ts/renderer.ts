@@ -267,6 +267,7 @@ export class Renderer {
   renderDropDown(items: string[], mainClass: string, callback: boolean = true, openItem: number | undefined): HTMLElement {
     const elDropDown = document.createElement('div')
     elDropDown.classList.add('dropdown-container')
+    elDropDown.classList.add(mainClass)
     items.forEach((item: string, i: number) => {
       const elDropDownItem = document.createElement('div')
       elDropDownItem.textContent = item

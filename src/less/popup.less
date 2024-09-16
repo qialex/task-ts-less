@@ -133,26 +133,3 @@
   }
 }
 
-.dropdown-button {
-  &::after {
-    content: '';
-    position: relative;
-    margin-left: 0.5rem;
-    border-left: 2px solid @main-color;
-    border-top: 2px solid @main-color;
-    width: 5px;
-    height: 5px;
-    display: inline-block;
-    transform: rotate(-135deg);
-    margin-bottom: 3px;
-  }
-  &.open::after {
-    transform: rotate(45deg);
-    margin-bottom: -2px;
-  }
-
-  .dropdown-container {
-    position: absolute;
-    background-color: @main-button-bg;
-  }
-}
