@@ -244,13 +244,14 @@ export class Renderer {
 
       // render dropdown
       if (this.props.isDropDownOpen) {
+        elOrderDropDownBTN.classList.add('open')
         const elDropDown = this.renderDropDown([
           this.localisation.get('glass'),
           this.localisation.get('can'),
           this.localisation.get('box'),
-        ])
+        ], 'main-dropdown', true, this.props.dropDownItemSelected)
         if (typeof this.props.dropDownItemSelected == 'number') {
-          const secondDropDown = this.renderDropDown(['1', '2', '3'], false)
+          const secondDropDown = this.renderDropDown(['1', '2', '3'], 'second-dropdown', false, undefined)
           elDropDown.children[this.props.dropDownItemSelected].appendChild(secondDropDown)
         }
         elOrderDropDownBTN.appendChild(elDropDown)
@@ -263,13 +264,17 @@ export class Renderer {
     return document.createElement('div')
   }
 
-  renderDropDown(items: string[], callback: boolean = true): HTMLElement {
+  renderDropDown(items: string[], mainClass: string, callback: boolean = true, openItem: number | undefined): HTMLElement {
     const elDropDown = document.createElement('div')
     elDropDown.classList.add('dropdown-container')
     items.forEach((item: string, i: number) => {
       const elDropDownItem = document.createElement('div')
       elDropDownItem.textContent = item
       elDropDownItem.classList.add('dropdown-item')
+      elDropDownItem.classList.add(mainClass)
+      if (typeof this.props.dropDownItemSelected == 'number' && i == openItem) {
+        elDropDownItem.classList.add('open')
+      }
       elDropDownItem.classList.add(`dropdown-item-${i}`)
       if (callback) {
         this.clickListeners.push(
