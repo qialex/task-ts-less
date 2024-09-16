@@ -122,6 +122,7 @@ export class Renderer {
     // img bg
     const elBeerImageBG = document.createElement('div')
     elBeerImageBG.classList.add('beer-item-img-bg')
+    elBeerImageBG.classList.add(`beer-item-img-bg-${beer.ibu.toString()[0]}`)
     elBeerItemContent.appendChild(elBeerImageBG)
 
     const elBeerImage = document.createElement('img')
@@ -160,32 +161,59 @@ export class Renderer {
       const elBeerPopup = document.createElement('div')
       elBeerPopup.classList.add('popup-wrapper')
       this.clickListeners.push(
-        {target: 'popup-wrapper', ignore: 'popup-content', callback: () => this.eventHandler({type: EventType.deselectItem} as Event)}
+        {target: 'popup-wrapper', ignore: 'popup-content', callback: () => this.eventHandler({type: EventType.deselectItem} as Event)},
       )
-
-      const elClose = document.createElement('div')
-      elClose.classList.add('popup-close-icon')
-      elBeerPopup.appendChild(elClose)
+      this.clickListeners.push(
+        {target: 'popup-close-icon', ignore: '', callback: () => this.eventHandler({type: EventType.deselectItem} as Event)},
+      )
 
       const elBeerPopupContent = document.createElement('div')
       elBeerPopupContent.classList.add('popup-content')
       elBeerPopup.appendChild(elBeerPopupContent)
+
+      const elClose = document.createElement('div')
+      elClose.classList.add('popup-close-icon')
+      elBeerPopupContent.appendChild(elClose)
       
-      const elBeerTitle = document.createElement('div')
-      elBeerTitle.textContent = beer.name
-      elBeerPopupContent.appendChild(elBeerTitle)
+      const elBeerPopupTop = document.createElement('div')
+      elBeerPopupTop.classList.add('popup-content-top')
+      elBeerPopupContent.appendChild(elBeerPopupTop)
+
+      // img bg and other data
+      const elBeerImgBg = document.createElement('div')
+      elBeerImgBg.classList.add('popup-content-img-bg')
+      elBeerImgBg.classList.add(`beer-item-img-bg-${beer.ibu.toString()[0]}`)
+      elBeerPopupTop.appendChild(elBeerImgBg)
 
       const elBeerIbu = document.createElement('div')
+      elBeerIbu.classList.add('popup-content-ibu')
       elBeerIbu.textContent = `${this.localisation.get('abbrIBU')}: ${beer.ibu}`
-      elBeerPopupContent.appendChild(elBeerIbu)
+      elBeerImgBg.appendChild(elBeerIbu)
 
       const elBeerAbv = document.createElement('div')
+      elBeerAbv.classList.add('popup-content-abv')
       elBeerAbv.textContent = `${beer.abv}%`
-      elBeerPopupContent.appendChild(elBeerAbv)
+      elBeerImgBg.appendChild(elBeerAbv)
 
+      // description
       const elBeerDesc = document.createElement('div')
       elBeerDesc.textContent = beer.description
-      elBeerPopupContent.appendChild(elBeerDesc)
+      elBeerPopupTop.appendChild(elBeerDesc)
+
+      // img
+      const elBeerImage = document.createElement('img')
+      elBeerImage.src = beer.imageUrl
+      elBeerImgBg.appendChild(elBeerImage)
+
+      // footer
+      const elBeerPopupFooter = document.createElement('div')
+      elBeerPopupFooter.classList.add('popup-content-footer')
+      elBeerPopupContent.appendChild(elBeerPopupFooter)
+
+      const elBeerTitle = document.createElement('div')
+      elBeerTitle.classList.add('popup-content-title')
+      elBeerTitle.textContent = beer.name
+      elBeerPopupFooter.appendChild(elBeerTitle)
 
       const elOrderDropDownBTN = document.createElement('button')
       elOrderDropDownBTN.classList.add('dropdown-button')
@@ -193,7 +221,7 @@ export class Renderer {
         {target: this.props.isDropDownOpen ? '' : 'dropdown-button', ignore: 'dropdown-item', callback: () => this.eventHandler({type:  EventType.setDropDown, payload: !this.props.isDropDownOpen} as Event)}
       )
       elOrderDropDownBTN.textContent = this.localisation.get('order')
-      elBeerPopupContent.appendChild(elOrderDropDownBTN)
+      elBeerPopupFooter.appendChild(elOrderDropDownBTN)
 
       // render dropdown
       if (this.props.isDropDownOpen) {
@@ -209,11 +237,6 @@ export class Renderer {
         elOrderDropDownBTN.appendChild(elDropDown)
       }
 
-      const elBeerImage = document.createElement('img')
-      elBeerImage.src = beer.imageUrl
-      elBeerImage.width = 100
-      elBeerImage.height = 100
-      elBeerPopupContent.appendChild(elBeerImage)
 
       return elBeerPopup
 

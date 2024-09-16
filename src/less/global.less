@@ -7,14 +7,48 @@ html, body, body > div:first-child {
   align-items: center;
   justify-content: center;
   font-family: @main-font;
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  min-width: 100%;
   flex-direction: column;
+  background-color: @main-bg;
+  color: @main-color;
 }
 
 button {
   font-family: @main-font;
+  padding: 0.5rem;
 }
 
+
+.beer-item-img-bg-0 {
+  .gradient-bg(@item-image-bg-color-1, @item-image-bg-color-2)
+}
+.beer-item-img-bg-1 {
+  .gradient-bg(@item-image-bg-color-2, @item-image-bg-color-3)
+}
+.beer-item-img-bg-2 {
+  .gradient-bg(@item-image-bg-color-3, @item-image-bg-color-4)
+}
+.beer-item-img-bg-3 {
+  .gradient-bg(@item-image-bg-color-4, @item-image-bg-color-5)
+}
+.beer-item-img-bg-4 {
+  .gradient-bg(@item-image-bg-color-5, @item-image-bg-color-6)
+}
+.beer-item-img-bg-5 {
+  .gradient-bg(@item-image-bg-color-6, @item-image-bg-color-7)
+}
+.beer-item-img-bg-6 {
+  .gradient-bg(@item-image-bg-color-7, @item-image-bg-color-8)
+}
+.beer-item-img-bg-7 {
+  .gradient-bg(@item-image-bg-color-8, @item-image-bg-color-9)
+}
+.beer-item-img-bg-8 {
+  .gradient-bg(@item-image-bg-color-9, @item-image-bg-color-10)
+}
+.beer-item-img-bg-9 {
+  .gradient-bg(@item-image-bg-color-10, @item-image-bg-color-1)
+}    
 
 

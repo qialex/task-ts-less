@@ -1,41 +1,110 @@
 @import "./mixin.less";
-
+@import "./theme.less";
 
 
 .popup-wrapper {
   .full-screen-shadow(0.2)
 }
 
-.popup-close-icon {
-  width:40px;
-  height:40px;
-  background-color: white;
-  position:relative;
-  border-radius:100%;
-  cursor: pointer;
-}
 
-.popup-close-icon:before,.popup-close-icon:after{
-  content:'';
-  position:absolute;
-  width:28px;
-  height:4px;
-  background-color:black;
-  border-radius:2px;
-  top:18px;
-}
-
-.popup-close-icon:before{
-  transform:rotate(45deg);
-  left:6px;
-}
-.popup-close-icon:after{
-  transform:rotate(-45deg);
-  right:6px;
-}
 
 .popup-content {
-  background: white;
+  position: relative;
+  background: @popup-content-bg;
   width: 60vw;
-  height: 60vh;
+  max-height: 60vh;
+  .box-shadow();
+
+  .popup-close-icon {
+    .box-shadow();
+    width:32px;
+    height:32px;
+    background-color: @popup-content-bg;
+    position:absolute;
+    right: -2.2rem;
+    top: -2.2rem;
+    border-radius:100%;
+    cursor: pointer;
+  }
+  
+  .popup-close-icon:before,.popup-close-icon:after{
+    content:'';
+    position:absolute;
+    width:18px;
+    height:2px;
+    background-color: @main-color;
+    border-radius:2px;
+    top:15px;
+  }
+  
+  .popup-close-icon:before{
+    transform:rotate(45deg);
+    left:7px;
+  }
+  .popup-close-icon:after{
+    transform:rotate(-45deg);
+    right:7px;
+  }
+
+  
+  .popup-content-top {
+    padding: 1rem;
+
+    .popup-content-img-bg {
+      .box-shadow();
+      border-radius: 100%;
+      outline: 6px solid red;
+      border-top: 2px solid black;
+      border-left: 2px solid black;
+      border-right: 2px solid black;
+      // border-bottom-left-radius: 0;
+      // border-bottom-right-radius: 0;
+      width: 10rem;
+      height: 10rem;
+      float: left;
+      shape-outside: circle();
+      margin-right: 2rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+
+      .popup-content-abv {
+        position: absolute;
+        bottom: -2px;
+        background: red;
+        border: 2px solid black;
+        width: 100%;
+        text-align: center;
+        height: 20%;
+      }
+
+      .popup-content-ibu {
+        position: absolute;
+        left: 0;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 80%;
+      }
+    }
+  }
+
+  .popup-content-footer {
+    width: calc(100% - 2rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 0 1rem 1rem;
+
+    .popup-content-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 2rem;
+    }
+  }
 }
