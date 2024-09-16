@@ -34,6 +34,12 @@ export type ClickListener = {
   callback: () => void,
 }
 
+export type KeyboardListener = {
+  target: string,
+  key: string,
+  callback: () => void,
+}
+
 export enum EventType {
   initApp = 'initApp',
   repeatDataLoading = 'repeatDataLoading',

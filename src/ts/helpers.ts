@@ -10,3 +10,23 @@ export function transformBeer(beersDTO: BeerDTO[]): Beer[] {
     name: beerDTO.name,
   }))
 }
+
+export function createHTMLElement(tag: string, parent?: HTMLElement, classes?: string[]|string, textContent?: string) {
+  const el = document.createElement(tag)
+  if (classes) {
+    if (typeof classes === 'string') {
+      el.classList.add(classes)
+    } else {
+      classes.forEach((c: string) => {
+        el.classList.add(c)
+      })
+    }
+  }
+  if (textContent?.length) {
+    el.textContent = textContent
+  }
+  if (parent) {
+    parent.appendChild(el)
+  }
+  return el
+}
