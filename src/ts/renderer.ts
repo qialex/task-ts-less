@@ -1,4 +1,4 @@
-import { createHTMLElement } from "./helpers"
+import { createHTMLElement, getBeerBgClass } from "./helpers"
 import { LocaleService } from "./locale.service"
 import { ApiStatus, AppStateProps, Beer, ClickListener, Event, EventType, KeyboardListener } from "./types"
 
@@ -103,7 +103,6 @@ export class Renderer {
 
   renderBeer(beer: Beer): HTMLElement {
     const key = `beer-item-${beer.id.toString()}`
-    const beerBgClass = `beer-item-img-bg-${beer.ibu.toString()[0]}`
     const ibuText = `${this.localisation.get('abbrIBU')}: ${beer.ibu}`
     const abvText = `${beer.abv}%`
 
@@ -118,7 +117,7 @@ export class Renderer {
     // bg
     const elBeerItemContent = createHTMLElement('div', elBeerItem, 'beer-item-content')
     // img bg
-    const elBeerImageBG = createHTMLElement('div', elBeerItemContent, ['beer-item-img-bg', beerBgClass])
+    const elBeerImageBG = createHTMLElement('div', elBeerItemContent, ['beer-item-img-bg', getBeerBgClass(beer)])
     // img
     const elBeerImage = createHTMLElement('img', elBeerImageBG, 'beer-item-img') as HTMLImageElement
     elBeerImage.src = beer.imageUrl
@@ -136,93 +135,38 @@ export class Renderer {
   renderBeerPopup(): HTMLElement {
     const beer = this.props.selectedBeer
     if (beer) {
-      this.keyboardListeners.push(
-        {target: '', key: 'Escape', callback: () => this.eventHandler({type: EventType.deselectItem} as Event)},
-      )
-
-      const elBeerPopup = document.createElement('div')
-      elBeerPopup.classList.add('popup-wrapper')
       this.clickListeners.push(
         {target: 'popup-wrapper', ignore: 'popup-content', callback: () => this.eventHandler({type: EventType.deselectItem} as Event)},
       )
       this.clickListeners.push(
         {target: 'popup-close-icon', ignore: '', callback: () => this.eventHandler({type: EventType.deselectItem} as Event)},
+      )      
+      this.keyboardListeners.push(
+        {target: '', key: 'Escape', callback: () => this.eventHandler({type: EventType.deselectItem} as Event)},
       )
 
-      const elBeerPopupContent = document.createElement('div')
-      elBeerPopupContent.classList.add('popup-content')
-      elBeerPopup.appendChild(elBeerPopupContent)
-
-      const elClose = document.createElement('div')
-      elClose.classList.add('popup-close-icon')
-      elBeerPopupContent.appendChild(elClose)
-      
-      const elBeerPopupTop = document.createElement('div')
-      elBeerPopupTop.classList.add('popup-content-top')
-      elBeerPopupContent.appendChild(elBeerPopupTop)
-      // img bg and other data
-      // outer border
-      const elBeerImgWrapper = document.createElement('div')
-      elBeerImgWrapper.classList.add('popup-content-img-wrapper')
-      elBeerPopupTop.appendChild(elBeerImgWrapper)
-      // inner border
-      const elBeerImgAbvWrapper = document.createElement('div')
-      elBeerImgAbvWrapper.classList.add('popup-content-img-abv-wrapper')
-      elBeerImgWrapper.appendChild(elBeerImgAbvWrapper)
-
-      // animation bg
-      const elBeerImgBg = document.createElement('div')
-      elBeerImgBg.classList.add(`popup-content-img-bg`)
-      elBeerImgBg.classList.add(`beer-item-img-bg-${beer.ibu.toString()[0]}`)
-      elBeerImgAbvWrapper.appendChild(elBeerImgBg)
-      // img
-      const elBeerImage = document.createElement('img')
-      elBeerImage.src = beer.imageUrl
-      elBeerImgBg.appendChild(elBeerImage)
-      // ibu
-      const elBeerIbuWrapper = document.createElement('div')
-      elBeerIbuWrapper.classList.add('popup-content-ibu-wrapper')
-      elBeerImgBg.appendChild(elBeerIbuWrapper)
-
-      const elBeerIbuTitle = document.createElement('div')
-      elBeerIbuTitle.textContent = this.localisation.get('abbrIBU')
-      elBeerIbuWrapper.appendChild(elBeerIbuTitle)
-
-      const elBeerIbuValue = document.createElement('div')
-      elBeerIbuValue.textContent = beer.ibu.toString()
-      elBeerIbuWrapper.appendChild(elBeerIbuValue)
-      
-
-      // abv
-      const elBeerAbv = document.createElement('div')
-      elBeerAbv.classList.add('popup-content-abv')
-      elBeerAbv.textContent = `${beer.abv}%`
-      elBeerImgWrapper.appendChild(elBeerAbv)
-
-
+      // main
+      const elBeerPopup = createHTMLElement('div', undefined, 'popup-wrapper')
+      // content
+      const elBeerPopupContent = createHTMLElement('div', elBeerPopup, 'popup-content')
+      // close icon
+      createHTMLElement('div', elBeerPopupContent, 'popup-close-icon')
+      // top 
+      const elBeerPopupTop = createHTMLElement('div', elBeerPopupContent, 'popup-content-top')
+      // img 
+      elBeerPopupTop.appendChild(this.renderPopupImg())
       // description
-      const elBeerDesc = document.createElement('div')
-      elBeerDesc.textContent = beer.description
-      elBeerPopupTop.appendChild(elBeerDesc)
-
-
+      createHTMLElement('div', elBeerPopupTop, '', beer.description)
       // footer
-      const elBeerPopupFooter = document.createElement('div')
-      elBeerPopupFooter.classList.add('popup-content-footer')
-      elBeerPopupContent.appendChild(elBeerPopupFooter)
-
-      const elBeerTitle = document.createElement('div')
-      elBeerTitle.classList.add('popup-content-title')
-      elBeerTitle.textContent = beer.name
-      elBeerPopupFooter.appendChild(elBeerTitle)
-
-      const elOrderDropDownBTN = document.createElement('button')
-      elOrderDropDownBTN.classList.add('dropdown-button')
+      const elBeerPopupFooter = createHTMLElement('div', elBeerPopupContent, 'popup-content-footer')
+      // title
+      createHTMLElement('div', elBeerPopupFooter, 'popup-content-title', beer.name)
+      // dropdown
+      const elOrderDropDownBTN = createHTMLElement('button', elBeerPopupFooter, 'dropdown-button', this.localisation.get('order'))
+      // handle click
       this.clickListeners.push(
         {target: this.props.isDropDownOpen ? '' : 'dropdown-button', ignore: 'dropdown-item', callback: () => this.eventHandler({type:  EventType.setDropDown, payload: !this.props.isDropDownOpen} as Event)}
       )
-      elOrderDropDownBTN.textContent = this.localisation.get('order')
-      elBeerPopupFooter.appendChild(elOrderDropDownBTN)
 
       // render dropdown
       if (this.props.isDropDownOpen) {
@@ -243,18 +187,14 @@ export class Renderer {
       return elBeerPopup
 
     }
-    return document.createElement('div')
+    return createHTMLElement('div')
   }
 
   renderDropDown(items: string[], mainClass: string, callback: boolean = true, openItem: number | undefined): HTMLElement {
-    const elDropDown = document.createElement('div')
-    elDropDown.classList.add('dropdown-container')
-    elDropDown.classList.add(mainClass)
+    const elDropDown = createHTMLElement('div', undefined, ['dropdown-container', mainClass])
     items.forEach((item: string, i: number) => {
-      const elDropDownItem = document.createElement('div')
-      elDropDownItem.textContent = item
-      elDropDownItem.classList.add('dropdown-item')
-      elDropDownItem.classList.add(mainClass)
+      const elDropDownItem = createHTMLElement('div', elDropDown, ['dropdown-item', mainClass], item)
+
       if (typeof this.props.dropDownItemSelected == 'number' && i == openItem) {
         elDropDownItem.classList.add('open')
       }
@@ -264,8 +204,36 @@ export class Renderer {
           {target: `dropdown-item-${i}`, ignore: '', callback: () => this.eventHandler({type:  EventType.selectDropDownChild, payload: i} as Event)}
         )
       }
-      elDropDown.appendChild(elDropDownItem)
     })
     return elDropDown
+  }
+
+  renderPopupImg(): HTMLElement {
+    const beer = this.props.selectedBeer
+    if (beer) {
+      // img bg and other data
+      // outer border
+      const elBeerImgWrapper = createHTMLElement('div', undefined, 'popup-content-img-wrapper')
+      // inner border
+      const elBeerImgAbvWrapper = createHTMLElement('div', elBeerImgWrapper, 'popup-content-img-abv-wrapper')
+      // animation bg
+      const elBeerImgBg = createHTMLElement('div', elBeerImgAbvWrapper, ['popup-content-img-bg', getBeerBgClass(beer)])
+
+      // img
+      const elBeerImage = createHTMLElement('img', elBeerImgBg) as HTMLImageElement
+      elBeerImage.src = beer.imageUrl
+      // ibu
+      const elBeerIbuWrapper = createHTMLElement('div', elBeerImgBg, 'popup-content-ibu-wrapper')
+      // ibu title
+      createHTMLElement('div', elBeerIbuWrapper, '', this.localisation.get('abbrIBU'))
+      // ibu value
+      createHTMLElement('div', elBeerIbuWrapper, '', beer.ibu.toString())
+      // abv
+      createHTMLElement('div', elBeerImgWrapper, 'popup-content-abv', `${beer.abv}%`)
+
+      return elBeerImgWrapper
+    } else {
+      return createHTMLElement('div')
+    }
   }
 }

@@ -30,3 +30,7 @@ export function createHTMLElement(tag: string, parent?: HTMLElement, classes?: s
   }
   return el
 }
+
+export function getBeerBgClass(beer: Beer): string {
+  return `beer-item-img-bg-${beer.ibu.toString()[0]}`
+}
