@@ -99,6 +99,10 @@ export class Renderer {
     } catch (e) {
       console.error(e)
     }
+
+    // TODO: 
+    // next step would be to create a DOM tree and then not just remove the old one 
+    // but recursively compare trees and replace only some elements and nodes.
   }
 
   renderBeer(beer: Beer): HTMLElement {
