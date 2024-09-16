@@ -178,32 +178,51 @@ export class Renderer {
       const elBeerPopupTop = document.createElement('div')
       elBeerPopupTop.classList.add('popup-content-top')
       elBeerPopupContent.appendChild(elBeerPopupTop)
-
       // img bg and other data
+      // outer border
+      const elBeerImgWrapper = document.createElement('div')
+      elBeerImgWrapper.classList.add('popup-content-img-wrapper')
+      elBeerPopupTop.appendChild(elBeerImgWrapper)
+      // inner border
+      const elBeerImgAbvWrapper = document.createElement('div')
+      elBeerImgAbvWrapper.classList.add('popup-content-img-abv-wrapper')
+      elBeerImgWrapper.appendChild(elBeerImgAbvWrapper)
+
+      // animation bg
       const elBeerImgBg = document.createElement('div')
-      elBeerImgBg.classList.add('popup-content-img-bg')
+      elBeerImgBg.classList.add(`popup-content-img-bg`)
       elBeerImgBg.classList.add(`beer-item-img-bg-${beer.ibu.toString()[0]}`)
-      elBeerPopupTop.appendChild(elBeerImgBg)
+      elBeerImgAbvWrapper.appendChild(elBeerImgBg)
+      // img
+      const elBeerImage = document.createElement('img')
+      elBeerImage.src = beer.imageUrl
+      elBeerImgBg.appendChild(elBeerImage)
+      // ibu
+      const elBeerIbuWrapper = document.createElement('div')
+      elBeerIbuWrapper.classList.add('popup-content-ibu-wrapper')
+      elBeerImgBg.appendChild(elBeerIbuWrapper)
 
-      const elBeerIbu = document.createElement('div')
-      elBeerIbu.classList.add('popup-content-ibu')
-      elBeerIbu.textContent = `${this.localisation.get('abbrIBU')}: ${beer.ibu}`
-      elBeerImgBg.appendChild(elBeerIbu)
+      const elBeerIbuTitle = document.createElement('div')
+      elBeerIbuTitle.textContent = this.localisation.get('abbrIBU')
+      elBeerIbuWrapper.appendChild(elBeerIbuTitle)
 
+      const elBeerIbuValue = document.createElement('div')
+      elBeerIbuValue.textContent = beer.ibu.toString()
+      elBeerIbuWrapper.appendChild(elBeerIbuValue)
+      
+
+      // abv
       const elBeerAbv = document.createElement('div')
       elBeerAbv.classList.add('popup-content-abv')
       elBeerAbv.textContent = `${beer.abv}%`
-      elBeerImgBg.appendChild(elBeerAbv)
+      elBeerImgWrapper.appendChild(elBeerAbv)
+
 
       // description
       const elBeerDesc = document.createElement('div')
       elBeerDesc.textContent = beer.description
       elBeerPopupTop.appendChild(elBeerDesc)
 
-      // img
-      const elBeerImage = document.createElement('img')
-      elBeerImage.src = beer.imageUrl
-      elBeerImgBg.appendChild(elBeerImage)
 
       // footer
       const elBeerPopupFooter = document.createElement('div')
